@@ -2,7 +2,7 @@
 
 Python3 mRNA sequence processing
 
-# Software requierements
+# Software requirements
 
 - If you don't already, install [Python3.6+](https://www.python.org/downloads/) on your device.
 
