@@ -1,7 +1,6 @@
 from Sequence import Sequence
 import re
 
-
 stop_codons = ['UAG', 'UGA', 'UAA']
 
 def parse_fasta(source):
@@ -9,9 +8,10 @@ def parse_fasta(source):
     genes = []
     for line in source:
         line = line.rstrip()
-        if line.startswith(">"):
+        comment_position = re.search(">", line)
+        if comment_position:
             if id: genes.append(Sequence(id=id, seq="".join(seq).replace(" ","").replace("\r", "").upper()))
-            id, seq = line[1:], [] 
+            id, seq = line[comment_position.end():], [] 
         else:
             seq.append(line)
     if id: genes.append(Sequence(id=id, seq="".join(seq).replace(" ","").replace("\r", "").upper()))
@@ -21,9 +21,10 @@ def parse_fasta_yield(source):
     id, seq = None, []
     for line in source:
         line = line.rstrip()
-        if line.startswith(">"):
+        comment_position = re.search(">", line)
+        if comment_position:
             if id: yield Sequence(id=id, seq="".join(seq).replace(" ","").replace("\r", "").upper())
-            id, seq = line[1:], []     
+            id, seq = line[comment_position.end():], []     
         else:
             seq.append(line)  
     if id: yield Sequence(id=id, seq="".join(seq).replace(" ","").replace("\r", "").upper())  

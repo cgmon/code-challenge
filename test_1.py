@@ -7,6 +7,9 @@ augugcgag gacugcuga
 >NM_0003 
 augugcgaguag""".splitlines()
 
+valid_data_inline_comments = """augucgag >NM_0002
+augugcgag""".splitlines()
+
 invalid_data= """skip this""".splitlines()
 
 invalid_data_char = """>NM_0002
@@ -17,6 +20,8 @@ auugccguaaa""".splitlines()
 
 invalid_data_end = """>NM_0002
 auugccgcc""".splitlines()
+
+
 
 invalid_data_streams = """>NM_002
 augugcgaguga
@@ -29,9 +34,6 @@ augugcd
 ########################################################
 
 def test_skips_non_relevant_initial_content():
-    data= """
-    skip this
-    """
     records = parse_fasta(invalid_data)
     assert len(records) == 0
 
@@ -68,6 +70,11 @@ def test_returns_genes_array():
     assert isinstance(genes, list)
     assert genes[0] == ['AUG','UGC','GAG','GAC','UGC','UGA']
     assert genes[1] == ['AUG','UGC','GAG','UAG']
+
+def test_inline_comments():
+    records = parse_fasta(valid_data_inline_comments)
+    assert len(records) == 1
+
 
 ########################################################
 ## Streams mode tests                                 ##
